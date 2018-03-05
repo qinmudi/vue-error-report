@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "vue 错误上报插件",
   "author": "秦睦迪 <qinmudi@qq.com>",
-  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
