@@ -1,15 +1,17 @@
 {
   "name": "vue-error-report",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "vue 错误上报插件",
   "author": "秦睦迪 <qinmudi@qq.com>",
+  "main": "dist/errorreport.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "rollup -c"
   },
   "dependencies": {
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "webpack-zepto": "0.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

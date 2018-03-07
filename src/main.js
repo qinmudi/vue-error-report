@@ -8,7 +8,8 @@ Vue.config.productionTip = false
 
 Vue.use(VueErrorReport,{
 	isReport: true,
-	reportUrl: 'https://ping.qq.com'
+	reportUrl: 'http://dev.sqm.wiiqq.com/api/fe/save',
+  appId: '86805a7139a2b8000'
 });
 
 /* eslint-disable no-new */

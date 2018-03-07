@@ -16,6 +16,14 @@ import VueErrorReport from 'vue-error-report'
 Vue.use(VueErrorReport,options)
 ```
 
+## 实例
+```javascript
+Vue.use(VueErrorReport,{
+    isReport: true,
+    reportUrl: 'https://ping.qq.com'
+})
+```
+
 ### options
 
 | 参数名 | 参数说明 | 是否必填 |

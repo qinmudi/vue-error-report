@@ -1,47 +1,65 @@
 import install from './install'
 
-function getSystemInfo() {
-	let ua = navigator.userAgent,
-		logMsg = '';
-
-	// device & system
-	let ipod = ua.match(/(ipod).*\s([\d_]+)/i),
-		ipad = ua.match(/(ipad).*\s([\d_]+)/i),
-		iphone = ua.match(/(iphone)\sos\s([\d_]+)/i),
-		android = ua.match(/(android)\s([\d\.]+)/i);
-
-	logMsg = 'Unknown';
-	if (android) {
-		logMsg = 'Android ' + android[2];
-	} else if (iphone) {
-		logMsg = 'iPhone, iOS ' + iphone[2].replace(/_/g, '.');
-	} else if (ipad) {
-		logMsg = 'iPad, iOS ' + ipad[2].replace(/_/g, '.');
-	} else if (ipod) {
-		logMsg = 'iPod, iOS ' + ipod[2].replace(/_/g, '.');
+/*
+ *格式化参数
+ */
+const formatParams = function(data) {
+	var arr = [];
+	for (var name in data) {
+		arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
 	}
-	let templogMsg = logMsg;
-	// wechat client version
-	let version = ua.match(/MicroMessenger\/([\d\.]+)/i);
-	logMsg = 'Unknown';
-	if (version && version[1]) {
-		logMsg = version[1];
-		templogMsg += (', WeChat ' + logMsg);
-	}
-	return templogMsg;
+	return arr.join("&");
 }
 
 const wiierror = {
-	reportUrl: null,
-	ua: getSystemInfo(),
+	reportUrl: '',
+	options: {
+		timespan: '', //发送数据时的时间戳
+		level: 'error', //js日志错误级别，如warning, error, info, debug
+		msg: '', //错误的具体信息,
+		user_agent: navigator.userAgent, //userAgent
+		app_id: '', //项目 id
+		url: location.href, //上报页面地址
+		stack: '', //错误堆栈
+		data: {} //更多错误信息
+	},
 	install,
-	sendReport(error, vm, info) {
-		var ua = this.ua
-		var url = encodeURIComponent(location.href)
-		var msg = error.message
-		var line = info
+	processStackMsg(error) {
+		var stack = error.stack
+			.replace(/\n/gi, '') // 去掉换行，节省传输内容大小
+			.replace(/\bat\b/gi, '@') // chrome中是at，ff中是@
+			.split('@') // 以@分割信息
+			.slice(0, 5) // 最大堆栈长度（Error.stackTraceLimit = 10），所以只取前10条
+			.map((v) => v.replace(/^\s*|\s*$/g, '')) // 去除多余空格
+			.join('~') // 手动添加分隔符，便于后期展示
+			.replace(/\?[^:]+/gi, ''); // 去除js文件链接的多余参数(?x=1之类)
+		var msg = error.toString();
+		if (stack.indexOf(msg) < 0) {
+			stack = msg + '@' + stack;
+		}
+		return stack;
+	},
+	formatComponentName(vm) {
+		if (vm.$root === vm) return 'root';
+		var name = vm._isVue ? (vm.$options && vm.$options.name) || (vm.$options && vm.$options._componentTag) : vm.name;
+		return (name ? 'component <' + name + '>' : 'anonymous component') + (vm._isVue && vm.$options && vm.$options.__file ? ' at ' + (vm.$options && vm.$options.__file) : '');
+	},
+	sendReport(data) {
 		var img = new Image()
-		img.src = `${this.reportUrl}?agent=${ua}&url=${url}&msg=${msg}&line=${line}`
+		this.options.timespan = new Date().getTime()
+		this.options.url = location.href
+		var reqData = Onject.assign({}, this.options, data)
+		img.src = `${this.reportUrl}?${formatParams(reqData)}`
+	},
+	send(error, vm) {
+		var componentName = this.formatComponentName(vm);
+		this.options.msg = error.message ? error.message : ''
+		this.options.stack = error.stack ? error.stack : ''
+		this.options.data = JSON.stringify({
+			category: 'style',
+			componentName: componentName
+		});
+		this.sendReport(this.options)
 	}
 }
 
