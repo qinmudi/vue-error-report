@@ -48,7 +48,7 @@ const wiierror = {
 		var img = new Image()
 		this.options.timespan = new Date().getTime()
 		this.options.url = location.href
-		var reqData = Onject.assign({}, this.options, data)
+		var reqData = Object.assign({}, this.options, data)
 		img.src = `${this.reportUrl}?${formatParams(reqData)}`
 	},
 	send(error, vm) {

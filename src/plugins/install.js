@@ -5,8 +5,8 @@ export default function install(Vue, options) {
 
 	let {isReport,reportUrl,appId} = options
 
-	if (!reportUrl) {
-		return console.error(`reportUrl is required`)
+	if (!reportUrl&&!appId) {
+		return console.error(`reportUrl&appId is required`)
 	}
 
 	wiierror.reportUrl = reportUrl
@@ -36,7 +36,6 @@ export default function install(Vue, options) {
 					} else {
 						wiierror.options.msg = 'ajax请求错误';
 						wiierror.options.stack = `错误码：${this.status}`
-						wiierror.options.url = this.ajaxUrl
 						wiierror.options.data = JSON.stringify({
 							fileName: this.ajaxUrl,
 							category: 'ajax',

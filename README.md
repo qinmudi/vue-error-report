@@ -1,6 +1,6 @@
 # vue-error-report
 
-> 平台组前端错误上报插件
+> 平台组前端错误上报插件，主要对静态资源加载、Ajax请求、Vue解析、Javascript语法解析等错误进行收集上报
 
 ## 安装
 
@@ -20,7 +20,8 @@ Vue.use(VueErrorReport,options)
 ```javascript
 Vue.use(VueErrorReport,{
     isReport: true,
-    reportUrl: 'https://ping.qq.com'
+    reportUrl: 'https://ping.qq.com',
+    appId: ''
 })
 ```
 
@@ -30,3 +31,4 @@ Vue.use(VueErrorReport,{
 | - | :-: | -:|
 | isReport |  是否开启上报 | 必填 |
 | reportUrl | 上报地址 | 必填 |
+| appId     | 项目id  | 必填 |

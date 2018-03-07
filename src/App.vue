@@ -46,8 +46,8 @@ export default {
     },
     sendAjax(){
       $.ajax({
-        url: 'https://qinmudi.cn/path/to/file',
-        type: 'POST',
+        url: 'https://node.qinmudi.cn',
+        type: 'GET',
         dataType: 'json',
         data: {
           param1: 'value1'
