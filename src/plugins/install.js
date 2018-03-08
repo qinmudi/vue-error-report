@@ -123,14 +123,14 @@ export default function install(Vue, options) {
 		//Vue异常监控
 		Vue.config.errorHandler = (error, vm, info) => {
 			var componentName = wiierror.formatComponentName(vm);
-			var propsData = vm.$options && vm.$options.propsData;
+			// var propsData = vm.$options && vm.$options.propsData;
 
 			wiierror.options.msg = error.message;
 			wiierror.options.stack = wiierror.processStackMsg(error);
 			wiierror.options.data = JSON.stringify({
 				category: 'vue',
 				componentName: componentName,
-				propsData: propsData,
+				// propsData: propsData,
 				info: info
 			});
 
