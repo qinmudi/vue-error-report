@@ -95,7 +95,6 @@ export default function install(Vue, options) {
 					line: line,
 					col: col
 				})
-				wiierror.options.timespan = new Date().getTime()
 				// 合并上报的数据，包括默认上报的数据和自定义上报的数据
 				var reportData = Object.assign({}, wiierror.options)
 				// 把错误信息发送给后台
