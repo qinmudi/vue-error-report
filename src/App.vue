@@ -46,7 +46,7 @@ export default {
     },
     sendAjax(){
       $.ajax({
-        url: 'https://node.qinmudi.cn',
+        url: '/wmu/test/get_list',
         type: 'GET',
         dataType: 'json',
         data: {

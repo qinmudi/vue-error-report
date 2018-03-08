@@ -18,38 +18,39 @@ export default function install(Vue, options) {
 
 	if (isReport) {
 		//Ajax监控
-		// var s_ajaxListener = new Object();
-		// s_ajaxListener.tempSend = XMLHttpRequest.prototype.send; //复制原先的send方法
-		// s_ajaxListener.tempOpen = XMLHttpRequest.prototype.open; //复制原先的open方法
-		// //重写open方法,记录请求的url
-		// XMLHttpRequest.prototype.open = function(method, url, boolen) {
-		// 	s_ajaxListener.tempOpen.apply(this, [method, url, boolen]);
-		// 	this.ajaxUrl = url;
+		var s_ajaxListener = new Object();
+		s_ajaxListener.tempSend = XMLHttpRequest.prototype.send; //复制原先的send方法
+		s_ajaxListener.tempOpen = XMLHttpRequest.prototype.open; //复制原先的open方法
+		//重写open方法,记录请求的url
+		XMLHttpRequest.prototype.open = function(method, url, boolen) {
+			s_ajaxListener.tempOpen.apply(this, [method, url, boolen]);
+			this.ajaxUrl = url;
 
-		// };
-		// XMLHttpRequest.prototype.send = function(_data) {
-		// 	s_ajaxListener.tempSend.apply(this, [_data]);
-		// 	this.onreadystatechange = function() {
-		// 		if (this.readyState == 4) {
-		// 			if (this.status >= 200 && this.status < 300) {
-		// 				return true;
-		// 			} else {
-		// 				wiierror.options.msg = 'ajax请求错误';
-		// 				wiierror.options.stack = `错误码：${this.status}`
-		// 				wiierror.options.data = JSON.stringify({
-		// 					fileName: this.ajaxUrl,
-		// 					category: 'ajax',
-		// 					text: this.statusText,
-		// 					status: this.status
-		// 				})
-		// 				// 合并上报的数据，包括默认上报的数据和自定义上报的数据
-		// 				var reportData = Object.assign({}, wiierror.options)
-		// 				// 把错误信息发送给后台
-		// 				wiierror.sendReport(reportData)
-		// 			}
-		// 		}
-		// 	}
-		// };
+		};
+		XMLHttpRequest.prototype.send = function(_data) {
+			var oldReq = this.onreadystatechange
+			this.onreadystatechange = function() {
+				if (this.readyState == 4) {
+					if (this.status >= 200 && this.status < 300) {
+						oldReq.apply(this, [_data])
+					} else {
+						wiierror.options.msg = 'ajax请求错误';
+						wiierror.options.stack = `错误码：${this.status}`
+						wiierror.options.data = JSON.stringify({
+							fileName: this.ajaxUrl,
+							category: 'ajax',
+							text: this.statusText,
+							status: this.status
+						})
+						// 合并上报的数据，包括默认上报的数据和自定义上报的数据
+						var reportData = Object.assign({}, wiierror.options)
+						// 把错误信息发送给后台
+						wiierror.sendReport(reportData)
+					}
+				}
+			}
+			s_ajaxListener.tempSend.apply(this, [_data])
+		};
 
 		//监控资源加载错误(img,script,css,以及jsonp)
 		window.addEventListener('error', function(e) {
