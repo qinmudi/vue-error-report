@@ -1,10 +1,10 @@
 # vue-error-report
 
 > 平台组前端错误上报插件，会自动收集以下几点：
-> 问题静态资源加载
-> Ajax请求
-> Vue语法错误
-> Javascript语法错误
+* 问题静态资源加载
+* Ajax请求
+* Vue语法错误
+* Javascript语法错误
 
 ## 安装
 
