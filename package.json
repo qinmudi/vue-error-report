@@ -1,9 +1,9 @@
 {
   "name": "vue-error-report",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "vue 错误上报插件",
   "author": "秦睦迪 <qinmudi@qq.com>",
-  "main": "dist/errorreport.js",
+  "main": "src/plugins/install.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
