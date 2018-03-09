@@ -32,7 +32,7 @@ export default function install(Vue, options) {
 			this.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.status >= 200 && this.status < 300) {
-						oldReq.apply(this, [_data])
+						oldReq?oldReq.apply(this, [_data]):''
 					} else {
 						wiierror.options.msg = 'ajax请求错误';
 						wiierror.options.stack = `错误码：${this.status}`
