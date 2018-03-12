@@ -1,6 +1,6 @@
 {
   "name": "vue-error-report",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "vue 错误上报插件",
   "author": "秦睦迪 <qinmudi@qq.com>",
   "main": "dist/errorreport.js",
