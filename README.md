@@ -36,3 +36,9 @@ Vue.use(VueErrorReport,{
 | isReport |  是否开启上报 | 必填 |
 | reportUrl | 上报地址 | 必填 |
 | appId     | 项目id  | 必填 |
+
+## 后置初始化
+```javascript
+//当isReport等于 false 时，可以手工调用 this.$wiierror.init() 进行初始化
+this.$wiierror.init()
+```
